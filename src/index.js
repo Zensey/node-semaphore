@@ -28,7 +28,7 @@ module.exports = function Semaphore(num) {
   function release() {
     if (active == 0) return;
     active--;
-    lock(queue.pop());
+    lock(queue.shift());
   }
 
   function lock(callback) {
