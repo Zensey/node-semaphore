@@ -18,14 +18,17 @@ module.exports = function Semaphore(num) {
 
   var queue = [], active = 0;
   num = num || 10;
+  //var cnt = 0;
 
   function acquire(callback) {
+    //console.log('acquire active='+active)
     if (active >= num)
       return queue.push(callback);
     lock(callback);
   }
 
   function release() {
+    //console.log('release active='+active)
     if (active == 0) return;
     active--;
     lock(queue.shift());
@@ -37,5 +40,17 @@ module.exports = function Semaphore(num) {
     active++;
   }
 
-  return {acquire: acquire, release: release};
+  function getActive() {
+    return active
+  }
+  function enter() {
+    console.log('enter active='+active)
+    active++
+  }
+  function exit() {
+    console.log('exit active='+active)
+    active--
+  }
+  return {acquire: acquire, release: release, getActive: getActive, enter:enter, exit:exit};
 }
+
